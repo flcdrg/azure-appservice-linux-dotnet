@@ -50,5 +50,5 @@ resource appService 'Microsoft.Web/sites@2024-04-01' = {
   }
 }
 
-@description('App service host name')
-output appServiceName string = appService.properties.defaultHostName
+@description('App service properties')
+output appService object = appService.properties
