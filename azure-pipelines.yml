@@ -53,5 +53,5 @@ steps:
       packageForLinux: "$(Build.ArtifactStagingDirectory)/**/*.zip"
 
   - pwsh: |
-      Invvoke-RestMethod -Uri "$(deployWebApp.AppServiceApplicationUrl)/weatherforecast" -ConnectionTimeoutSeconds 60
+      Invoke-RestMethod -Uri "$(deployWebApp.AppServiceApplicationUrl)/weatherforecast" -ConnectionTimeoutSeconds 60
     displayName: "Test deployed app"
