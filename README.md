@@ -1,6 +1,6 @@
-# azure-appservice-linux-dotnet
+# ASP.NET Core Web API app deployed to Azure App Service (Linux)
 
-Deploy an ASP.NET Core app to an Azure App Service (Linux)
+Deploy an ASP.NET Core app to an Azure App Service (Linux) using Azure Pipelines
 
 ## Infrastructure notes
 

@@ -4,15 +4,25 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- main
+  - main
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
-  Configuration: 'Release'
+  Configuration: "Release"
 
 steps:
-- script: dotnet build
-  displayName: 'dotnet build'
-  workingDirectory: src
+  - script: dotnet build
+    displayName: "dotnet build"
+    workingDirectory: src
+
+  # https://learn.microsoft.com/azure/azure-resource-manager/bicep/quickstart-create-deployment-stacks?tabs=azure-cli%2CCLI&WT.mc_id=DOP-MVP-5001655#create-a-deployment-stack
+  - task: AzureCLI@2
+    displayName: "Deploy to Azure"
+    inputs:
+      azureSubscription: "sp-dotnet-linux-australiaeast"
+      scriptType: "bash"
+      scriptLocation: "inlineScript"
+      inlineScript: |
+        az stack group create --name dotnet --resource-group rg-dotnet-linux-australiaeast --template-file main.bicep --action-on-unmanage deleteResources --deny-settings-mode none
