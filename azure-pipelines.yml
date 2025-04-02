@@ -36,7 +36,7 @@ steps:
     displayName: "Deploy to Azure"
     inputs:
       azureSubscription: "sp-dotnet-linux-australiaeast"
-      scriptType: "bash"
+      scriptType: bash
       visibleAzLogin: false
       scriptLocation: "inlineScript"
       inlineScript: |
@@ -44,9 +44,14 @@ steps:
 
   - task: AzureRmWebAppDeployment@5
     displayName: "Deploy to Azure Web App"
+    name: deployWebApp
     inputs:
       ConnectionType: "AzureRM"
       azureSubscription: "sp-dotnet-linux-australiaeast"
       appType: "webAppLinux"
       WebAppName: "app-dotnet-linux-australiaeast"
       packageForLinux: "$(Build.ArtifactStagingDirectory)/**/*.zip"
+
+  - pwsh: |
+      Invvoke-RestMethod -Uri "$(deployWebApp.AppServiceApplicationUrl)/weatherforecast" -ConnectionTimeoutSeconds 60
+    displayName: "Test deployed app"
