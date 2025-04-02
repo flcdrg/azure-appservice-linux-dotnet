@@ -13,9 +13,23 @@ variables:
   Configuration: "Release"
 
 steps:
-  - script: dotnet build
-    displayName: "dotnet build"
-    workingDirectory: src
+  - task: UseDotNet@2
+    displayName: "Use .NET Core SDK"
+    inputs:
+      packageType: "sdk"
+      useGlobalJson: true
+
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet publish"
+    inputs:
+      command: "publish"
+      projects: "**/*.csproj"
+      arguments: "--configuration $(Configuration) --output $(Build.ArtifactStagingDirectory)"
+      zipAfterPublish: true
+      workingDirectory: src
+
+  - script: ls -al $(Build.ArtifactStagingDirectory)
+    displayName: "List files in $(Build.ArtifactStagingDirectory)"
 
   # https://learn.microsoft.com/azure/azure-resource-manager/bicep/quickstart-create-deployment-stacks?tabs=azure-cli%2CCLI&WT.mc_id=DOP-MVP-5001655#create-a-deployment-stack
   - task: AzureCLI@2
@@ -27,3 +41,12 @@ steps:
       scriptLocation: "inlineScript"
       inlineScript: |
         az stack group create --name dotnet --resource-group rg-dotnet-linux-australiaeast --template-file main.bicep --action-on-unmanage deleteResources --deny-settings-mode none
+
+  - task: AzureRmWebAppDeployment@5
+    displayName: "Deploy to Azure Web App"
+    inputs:
+      ConnectionType: "AzureRM"
+      azureSubscription: "sp-dotnet-linux-australiaeast"
+      appType: "webAppLinux"
+      WebAppName: "dotnet-linux-australiaeast"
+      packageForLinux: "$(Build.ArtifactStagingDirectory)/**/*.zip"
