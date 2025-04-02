@@ -38,7 +38,7 @@ resource appService 'Microsoft.Web/sites@2024-04-01' = {
 
     siteConfig: {
       linuxFxVersion: paramAppServicePlan.linuxFxVersion
-      alwaysOn: true
+      alwaysOn: false
       minTlsVersion: '1.2'
       http20Enabled: true
       ftpsState: 'Disabled'

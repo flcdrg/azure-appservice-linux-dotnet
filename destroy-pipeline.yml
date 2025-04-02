@@ -23,4 +23,4 @@ steps:
       visibleAzLogin: false
       scriptLocation: "inlineScript"
       inlineScript: |
-        az stack group delete --name dotnet --resource-group rg-dotnet-linux-australiaeast --action-on-unmanage deleteResources
+        az stack group delete --name dotnet --resource-group rg-dotnet-linux-australiaeast --action-on-unmanage deleteResources --yes
