@@ -48,5 +48,5 @@ steps:
       ConnectionType: "AzureRM"
       azureSubscription: "sp-dotnet-linux-australiaeast"
       appType: "webAppLinux"
-      WebAppName: "dotnet-linux-australiaeast"
+      WebAppName: "app-dotnet-linux-australiaeast"
       packageForLinux: "$(Build.ArtifactStagingDirectory)/**/*.zip"
