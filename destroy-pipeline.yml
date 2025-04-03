@@ -23,4 +23,11 @@ steps:
       visibleAzLogin: false
       scriptLocation: "inlineScript"
       inlineScript: |
+
+        EXISTING=$(az stack group list --resource-group rg-dotnet-linux-australiaeast --query "[?name=='dotnet'].name" -o tsv)
+        if [ -z "$EXISTING" ]; then
+          echo "No deployment stack found. Nothing to delete."
+          exit 0
+        fi
+
         az stack group delete --name dotnet --resource-group rg-dotnet-linux-australiaeast --action-on-unmanage deleteResources --yes
